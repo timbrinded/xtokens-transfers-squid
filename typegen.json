@@ -1,0 +1,20 @@
+{
+  "outDir": "src/types",
+  "specVersions": "https://karura.archive.subsquid.io/graphql",
+  "events": [
+    "Balances.Transfer",
+    "XTokens.Transferred",
+    "XTokens.TransferredWithFee",
+    "XTokens.TransferredMultiAsset",
+    "XTokens.TransferredMultiAssetWithFee",
+    "XTokens.TransferredMultiCurrencies",
+    "XTokens.TransferredMultiAssets"
+  ],
+  "storage": [
+    "AssetRegistry.AssetMetadatas",
+    "AssetRegistry.LocationToCurrencyIds"
+  ],
+  "constants": [
+    "XTokens.SelfLocation"
+  ]
+}
