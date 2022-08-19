@@ -92,7 +92,7 @@ export async function parseTransferredEvent(
             blockNumber: block.height,
             timestamp: new Date(block.timestamp),
             extrinsicHash: event.extrinsic?.hash,
-            from: ss58.codec('karura').encode(data.sender),
+            from: ss58.codec('acala').encode(data.sender),
             to: dest,
             assets: [
                 {
@@ -146,7 +146,7 @@ export async function parseTransferredWithFeeEvent(
             blockNumber: block.height,
             timestamp: new Date(block.timestamp),
             extrinsicHash: event.extrinsic?.hash,
-            from: ss58.codec('karura').encode(data.sender),
+            from: ss58.codec('acala').encode(data.sender),
             to: dest,
             assets: [
                 {
@@ -230,7 +230,7 @@ export async function parseTransferredMultiAssetEvent(
             blockNumber: block.height,
             timestamp: new Date(block.timestamp),
             extrinsicHash: event.extrinsic?.hash,
-            from: ss58.codec('karura').encode(data.sender),
+            from: ss58.codec('acala').encode(data.sender),
             to: dest,
             assets: [
                 {
@@ -289,7 +289,7 @@ export async function parseTransferredMultiAssetWithFeeEvent(
             blockNumber: block.height,
             timestamp: new Date(block.timestamp),
             extrinsicHash: event.extrinsic?.hash,
-            from: ss58.codec('karura').encode(data.sender),
+            from: ss58.codec('acala').encode(data.sender),
             to: dest,
             assets: [
                 {
@@ -351,7 +351,7 @@ export async function parseTransferredMultiCurrenciesEvent(
             blockNumber: block.height,
             timestamp: new Date(block.timestamp),
             extrinsicHash: event.extrinsic?.hash,
-            from: ss58.codec('karura').encode(data.sender),
+            from: ss58.codec('acala').encode(data.sender),
             to: dest,
             assets,
             fee: event.extrinsic?.fee || 0n,
@@ -405,7 +405,7 @@ export async function parseTransferredMultiAssetsEvent(
             blockNumber: block.height,
             timestamp: new Date(block.timestamp),
             extrinsicHash: event.extrinsic?.hash,
-            from: ss58.codec('karura').encode(data.sender),
+            from: ss58.codec('acala').encode(data.sender),
             to: dest,
             assets,
             fee: event.extrinsic?.fee || 0n,

@@ -22,8 +22,8 @@ import {
 const processor = new SubstrateBatchProcessor()
     .setBatchSize(500)
     .setDataSource({
-        archive: lookupArchive('karura', { release: 'FireSquid' }),
-        chain: 'wss://karura.polkawallet.io',
+        archive: lookupArchive('acala', { release: 'FireSquid' }),
+        chain: 'wss://acala-rpc-1.aca-api.network',
     })
     .addEvent('XTokens.Transferred', {
         data: {

@@ -37,6 +37,18 @@ export interface V1MultiLocation {
   interior: V1Junctions
 }
 
+export interface V1MultiAsset {
+  id: V1AssetId
+  fun: V1Fungibility
+}
+
+export interface AssetMetadata {
+  name: Uint8Array
+  symbol: Uint8Array
+  decimals: number
+  minimalBalance: bigint
+}
+
 export type TokenSymbol = TokenSymbol_ACA | TokenSymbol_AUSD | TokenSymbol_DOT | TokenSymbol_LDOT | TokenSymbol_RENBTC | TokenSymbol_CASH | TokenSymbol_KAR | TokenSymbol_KUSD | TokenSymbol_KSM | TokenSymbol_LKSM | TokenSymbol_TAI | TokenSymbol_BNC | TokenSymbol_VSKSM | TokenSymbol_PHA | TokenSymbol_KINT | TokenSymbol_KBTC
 
 export interface TokenSymbol_ACA {
@@ -171,6 +183,30 @@ export interface V1Junctions_X8 {
   value: [V1Junction, V1Junction, V1Junction, V1Junction, V1Junction, V1Junction, V1Junction, V1Junction]
 }
 
+export type V1AssetId = V1AssetId_Concrete | V1AssetId_Abstract
+
+export interface V1AssetId_Concrete {
+  __kind: 'Concrete'
+  value: V1MultiLocation
+}
+
+export interface V1AssetId_Abstract {
+  __kind: 'Abstract'
+  value: Uint8Array
+}
+
+export type V1Fungibility = V1Fungibility_Fungible | V1Fungibility_NonFungible
+
+export interface V1Fungibility_Fungible {
+  __kind: 'Fungible'
+  value: bigint
+}
+
+export interface V1Fungibility_NonFungible {
+  __kind: 'NonFungible'
+  value: V1AssetInstance
+}
+
 export type V1Junction = V1Junction_Parachain | V1Junction_AccountId32 | V1Junction_AccountIndex64 | V1Junction_AccountKey20 | V1Junction_PalletInstance | V1Junction_GeneralIndex | V1Junction_GeneralKey | V1Junction_OnlyChild | V1Junction_Plurality
 
 export interface V1Junction_Parachain {
@@ -219,6 +255,42 @@ export interface V1Junction_Plurality {
   __kind: 'Plurality'
   id: V0BodyId
   part: V0BodyPart
+}
+
+export type V1AssetInstance = V1AssetInstance_Undefined | V1AssetInstance_Index | V1AssetInstance_Array4 | V1AssetInstance_Array8 | V1AssetInstance_Array16 | V1AssetInstance_Array32 | V1AssetInstance_Blob
+
+export interface V1AssetInstance_Undefined {
+  __kind: 'Undefined'
+}
+
+export interface V1AssetInstance_Index {
+  __kind: 'Index'
+  value: bigint
+}
+
+export interface V1AssetInstance_Array4 {
+  __kind: 'Array4'
+  value: Uint8Array
+}
+
+export interface V1AssetInstance_Array8 {
+  __kind: 'Array8'
+  value: Uint8Array
+}
+
+export interface V1AssetInstance_Array16 {
+  __kind: 'Array16'
+  value: Uint8Array
+}
+
+export interface V1AssetInstance_Array32 {
+  __kind: 'Array32'
+  value: Uint8Array
+}
+
+export interface V1AssetInstance_Blob {
+  __kind: 'Blob'
+  value: Uint8Array
 }
 
 export type V0NetworkId = V0NetworkId_Any | V0NetworkId_Named | V0NetworkId_Polkadot | V0NetworkId_Kusama

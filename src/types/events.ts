@@ -1,14 +1,8 @@
 import assert from 'assert'
 import {Chain, ChainContext, EventContext, Event, Result} from './support'
-import * as v1001 from './v1001'
-import * as v1008 from './v1008'
-import * as v1009 from './v1009'
-import * as v1014 from './v1014'
-import * as v1019 from './v1019'
-import * as v2001 from './v2001'
-import * as v2010 from './v2010'
+import * as v2000 from './v2000'
 import * as v2011 from './v2011'
-import * as v2012 from './v2012'
+import * as v2020 from './v2020'
 import * as v2022 from './v2022'
 import * as v2032 from './v2032'
 import * as v2040 from './v2040'
@@ -27,32 +21,32 @@ export class BalancesTransferEvent {
   }
 
   /**
-   *  Transfer succeeded. \[from, to, value\]
+   * Transfer succeeded. \[from, to, value\]
    */
-  get isV1000(): boolean {
+  get isV2000(): boolean {
     return this._chain.getEventHash('Balances.Transfer') === 'dad2bcdca357505fa3c7832085d0db53ce6f902bd9f5b52823ee8791d351872c'
   }
 
   /**
-   *  Transfer succeeded. \[from, to, value\]
+   * Transfer succeeded. \[from, to, value\]
    */
-  get asV1000(): [Uint8Array, Uint8Array, bigint] {
-    assert(this.isV1000)
+  get asV2000(): [Uint8Array, Uint8Array, bigint] {
+    assert(this.isV2000)
     return this._chain.decodeEvent(this.event)
   }
 
   /**
    * Transfer succeeded.
    */
-  get isV2010(): boolean {
+  get isV2011(): boolean {
     return this._chain.getEventHash('Balances.Transfer') === '0ffdf35c495114c2d42a8bf6c241483fd5334ca0198662e14480ad040f1e3a66'
   }
 
   /**
    * Transfer succeeded.
    */
-  get asV2010(): {from: Uint8Array, to: Uint8Array, amount: bigint} {
-    assert(this.isV2010)
+  get asV2011(): {from: Uint8Array, to: Uint8Array, amount: bigint} {
+    assert(this.isV2011)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -71,107 +65,17 @@ export class XTokensTransferredEvent {
   }
 
   /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get isV1001(): boolean {
-    return this._chain.getEventHash('XTokens.Transferred') === '88cab31c0831733035eadd39278c7db37780c7dffd3c5abe5d69915f81b2bcd8'
-  }
-
-  /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get asV1001(): [Uint8Array, v1001.CurrencyId, bigint, v1001.MultiLocation] {
-    assert(this.isV1001)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get isV1008(): boolean {
-    return this._chain.getEventHash('XTokens.Transferred') === 'af9848829023180f221b1b9d1e76f493eb2a29e6cb8fe96b407b02921f395758'
-  }
-
-  /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get asV1008(): [Uint8Array, v1008.CurrencyId, bigint, v1008.MultiLocation] {
-    assert(this.isV1008)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get isV1009(): boolean {
-    return this._chain.getEventHash('XTokens.Transferred') === '1098cd26516359cbd9ef5ca8fd1d0b1542f3d777ace1ff915cf9aefaee49f390'
-  }
-
-  /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get asV1009(): [Uint8Array, v1009.CurrencyId, bigint, v1009.MultiLocation] {
-    assert(this.isV1009)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get isV1014(): boolean {
-    return this._chain.getEventHash('XTokens.Transferred') === '1ec9d5281fc65c9fdd7cbe57c974262fd61a84e5206226f24efb9603190aee46'
-  }
-
-  /**
-   *  Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get asV1014(): [Uint8Array, v1014.CurrencyId, bigint, v1014.MultiLocation] {
-    assert(this.isV1014)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
    * Transferred. \[sender, currency_id, amount, dest\]
    */
-  get isV1019(): boolean {
+  get isV2000(): boolean {
     return this._chain.getEventHash('XTokens.Transferred') === '0e7cdeffa5bb4181dda583b17b437344b32253a5df5b08d6ced1ce3632a5f647'
   }
 
   /**
    * Transferred. \[sender, currency_id, amount, dest\]
    */
-  get asV1019(): [Uint8Array, v1019.CurrencyId, bigint, v1019.V1MultiLocation] {
-    assert(this.isV1019)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
-   * Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get isV2001(): boolean {
-    return this._chain.getEventHash('XTokens.Transferred') === '9a145990defa63703bebebf8d69a1b19fa54fa2354c1db382a31f3819aa73b46'
-  }
-
-  /**
-   * Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get asV2001(): [Uint8Array, v2001.CurrencyId, bigint, v2001.V1MultiLocation] {
-    assert(this.isV2001)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
-   * Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get isV2010(): boolean {
-    return this._chain.getEventHash('XTokens.Transferred') === 'ccfdde7c7f25a75394acf2285b042199a5476ea01436020e1a1dabb1dc65963a'
-  }
-
-  /**
-   * Transferred. \[sender, currency_id, amount, dest\]
-   */
-  get asV2010(): [Uint8Array, v2010.CurrencyId, bigint, v2010.V1MultiLocation] {
-    assert(this.isV2010)
+  get asV2000(): [Uint8Array, v2000.CurrencyId, bigint, v2000.V1MultiLocation] {
+    assert(this.isV2000)
     return this._chain.decodeEvent(this.event)
   }
 
@@ -193,15 +97,15 @@ export class XTokensTransferredEvent {
   /**
    * Transferred.
    */
-  get isV2012(): boolean {
+  get isV2020(): boolean {
     return this._chain.getEventHash('XTokens.Transferred') === '99b70efe6a0e14876ffba5edb5b66794f3c5b511c962035cc3d48463ce12ccc2'
   }
 
   /**
    * Transferred.
    */
-  get asV2012(): {sender: Uint8Array, currencyId: v2012.CurrencyId, amount: bigint, dest: v2012.V1MultiLocation} {
-    assert(this.isV2012)
+  get asV2020(): {sender: Uint8Array, currencyId: v2020.CurrencyId, amount: bigint, dest: v2020.V1MultiLocation} {
+    assert(this.isV2020)
     return this._chain.decodeEvent(this.event)
   }
 
@@ -235,62 +139,32 @@ export class XTokensTransferredMultiAssetEvent {
   }
 
   /**
-   *  Transferred `MultiAsset`. \[sender, asset, dest\]
-   */
-  get isV1001(): boolean {
-    return this._chain.getEventHash('XTokens.TransferredMultiAsset') === '39097320301d1b987a7e1a1f5796bb8f8420d54d9dc42fc39df22d1c21190261'
-  }
-
-  /**
-   *  Transferred `MultiAsset`. \[sender, asset, dest\]
-   */
-  get asV1001(): [Uint8Array, v1001.MultiAsset, v1001.MultiLocation] {
-    assert(this.isV1001)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
-   *  Transferred `MultiAsset`. \[sender, asset, dest\]
-   */
-  get isV1014(): boolean {
-    return this._chain.getEventHash('XTokens.TransferredMultiAsset') === 'b33f74081bd572be7ea9d0eebd4ff34b4f56cbe301a998bacf4f6dd14e329c12'
-  }
-
-  /**
-   *  Transferred `MultiAsset`. \[sender, asset, dest\]
-   */
-  get asV1014(): [Uint8Array, v1014.MultiAsset, v1014.MultiLocation] {
-    assert(this.isV1014)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
    * Transferred `MultiAsset`. \[sender, asset, dest\]
    */
-  get isV1019(): boolean {
+  get isV2000(): boolean {
     return this._chain.getEventHash('XTokens.TransferredMultiAsset') === 'c576be07d7337c6d483d9cb4dcd92edba9b7278d34d38dfbe185a6ffdeac90ad'
   }
 
   /**
    * Transferred `MultiAsset`. \[sender, asset, dest\]
    */
-  get asV1019(): [Uint8Array, v1019.V1MultiAsset, v1019.V1MultiLocation] {
-    assert(this.isV1019)
+  get asV2000(): [Uint8Array, v2000.V1MultiAsset, v2000.V1MultiLocation] {
+    assert(this.isV2000)
     return this._chain.decodeEvent(this.event)
   }
 
   /**
    * Transferred `MultiAsset`.
    */
-  get isV2012(): boolean {
+  get isV2020(): boolean {
     return this._chain.getEventHash('XTokens.TransferredMultiAsset') === '7fec273aa0ae147760c7dd1940b67deb436b25b9e2d4c7c75150b174e815408b'
   }
 
   /**
    * Transferred `MultiAsset`.
    */
-  get asV2012(): {sender: Uint8Array, asset: v2012.V1MultiAsset, dest: v2012.V1MultiLocation} {
-    assert(this.isV2012)
+  get asV2020(): {sender: Uint8Array, asset: v2020.V1MultiAsset, dest: v2020.V1MultiLocation} {
+    assert(this.isV2020)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -311,30 +185,30 @@ export class XTokensTransferredMultiAssetWithFeeEvent {
   /**
    * Transferred `MultiAsset` with fee. \[sender, asset, fee, dest\]
    */
-  get isV2010(): boolean {
+  get isV2011(): boolean {
     return this._chain.getEventHash('XTokens.TransferredMultiAssetWithFee') === 'bac4b8d0c2b1228f18e595bb7007474bf1969f0a2de83bc73a545831e561ed36'
   }
 
   /**
    * Transferred `MultiAsset` with fee. \[sender, asset, fee, dest\]
    */
-  get asV2010(): [Uint8Array, v2010.V1MultiAsset, v2010.V1MultiAsset, v2010.V1MultiLocation] {
-    assert(this.isV2010)
+  get asV2011(): [Uint8Array, v2011.V1MultiAsset, v2011.V1MultiAsset, v2011.V1MultiLocation] {
+    assert(this.isV2011)
     return this._chain.decodeEvent(this.event)
   }
 
   /**
    * Transferred `MultiAsset` with fee.
    */
-  get isV2012(): boolean {
+  get isV2020(): boolean {
     return this._chain.getEventHash('XTokens.TransferredMultiAssetWithFee') === 'cba4a5ec13032868bc74df82888767ea7fd34969b190ec1e6086219a80e5ee72'
   }
 
   /**
    * Transferred `MultiAsset` with fee.
    */
-  get asV2012(): {sender: Uint8Array, asset: v2012.V1MultiAsset, fee: v2012.V1MultiAsset, dest: v2012.V1MultiLocation} {
-    assert(this.isV2012)
+  get asV2020(): {sender: Uint8Array, asset: v2020.V1MultiAsset, fee: v2020.V1MultiAsset, dest: v2020.V1MultiLocation} {
+    assert(this.isV2020)
     return this._chain.decodeEvent(this.event)
   }
 }
@@ -428,21 +302,6 @@ export class XTokensTransferredWithFeeEvent {
   /**
    * Transferred with fee. \[sender, currency_id, amount, fee, dest\]
    */
-  get isV2010(): boolean {
-    return this._chain.getEventHash('XTokens.TransferredWithFee') === '431862f2dbc3f8cc33031121b1ec86a02fc9bb980fb5b09a1534e728267bc80e'
-  }
-
-  /**
-   * Transferred with fee. \[sender, currency_id, amount, fee, dest\]
-   */
-  get asV2010(): [Uint8Array, v2010.CurrencyId, bigint, bigint, v2010.V1MultiLocation] {
-    assert(this.isV2010)
-    return this._chain.decodeEvent(this.event)
-  }
-
-  /**
-   * Transferred with fee. \[sender, currency_id, amount, fee, dest\]
-   */
   get isV2011(): boolean {
     return this._chain.getEventHash('XTokens.TransferredWithFee') === 'b153db804dcd24161ad41c4a91c3ebe5a4b1df37516c8288681b83a80683b3a4'
   }
@@ -458,15 +317,15 @@ export class XTokensTransferredWithFeeEvent {
   /**
    * Transferred with fee.
    */
-  get isV2012(): boolean {
+  get isV2020(): boolean {
     return this._chain.getEventHash('XTokens.TransferredWithFee') === '09ad118ca7d0260dd9d51cd6ad1149db02cadbea4ad06f9db1496086308be316'
   }
 
   /**
    * Transferred with fee.
    */
-  get asV2012(): {sender: Uint8Array, currencyId: v2012.CurrencyId, amount: bigint, fee: bigint, dest: v2012.V1MultiLocation} {
-    assert(this.isV2012)
+  get asV2020(): {sender: Uint8Array, currencyId: v2020.CurrencyId, amount: bigint, fee: bigint, dest: v2020.V1MultiLocation} {
+    assert(this.isV2020)
     return this._chain.decodeEvent(this.event)
   }
 
