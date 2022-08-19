@@ -168,10 +168,10 @@ export type Currency =
 export type Token = { symbol: string; decimals: number }
 
 const nativeTokens: Map<string, Token & { num: number }> = new Map()
-    .set('ACA', { symbol: 'ACA', decimals: 12, num: 128 })
-    .set('AUSD', { symbol: 'AUSD', decimals: 12, num: 129 })
-    .set('DOT', { symbol: 'DOT', decimals: 10, num: 130 })
-    .set('LDOT', { symbol: 'LDOT', decimals: 10, num: 131 })
+    .set('ACA', { symbol: 'ACA', decimals: 12, num: 0 })
+    .set('AUSD', { symbol: 'AUSD', decimals: 12, num: 1 })
+    .set('DOT', { symbol: 'DOT', decimals: 10, num: 2 })
+    .set('LDOT', { symbol: 'LDOT', decimals: 10, num: 3 })
 
 export async function getTokenFromCurrency(ctx: BlockContext, currency: Currency): Promise<Token> {
     let token: Token | undefined
