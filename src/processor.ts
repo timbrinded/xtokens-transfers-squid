@@ -21,7 +21,6 @@ import {
 
 const processor = new SubstrateBatchProcessor()
     .setBatchSize(500)
-    .setBlockRange({ from: 1260000 })
     .setDataSource({
         archive: lookupArchive('acala', { release: 'FireSquid' }),
         chain: 'wss://acala-rpc-1.aca-api.network',
