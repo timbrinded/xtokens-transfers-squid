@@ -40,29 +40,7 @@ export type TransferredEventData = {
 export function getTransferredEventData(ctx: ChainContext, event: Event): TransferredEventData {
     const e = new XTokensTransferredEvent(ctx, event)
 
-    if (e.isV1001 || e.isV1008 || e.isV1009) {
-        const [sender, currencyId, amount, dest] = ctx._chain.decodeEvent(event)
-        return {
-            sender,
-            currencyId,
-            amount,
-            dest: {
-                __kind: 'V0',
-                value: dest,
-            },
-        }
-    } else if (e.isV1014 || e.isV1019 || e.isV2001 || e.isV2010 || e.isV2011) {
-        const [sender, currencyId, amount, dest] = ctx._chain.decodeEvent(event)
-        return {
-            sender,
-            currencyId,
-            amount,
-            dest: {
-                __kind: 'V1',
-                value: dest,
-            },
-        }
-    } else {
+
         const { sender, currencyId, amount, dest } = ctx._chain.decodeEvent(event)
         return {
             sender,
@@ -73,7 +51,7 @@ export function getTransferredEventData(ctx: ChainContext, event: Event): Transf
                 value: dest,
             },
         }
-    }
+
 }
 
 export async function parseTransferredEvent(
@@ -171,33 +149,7 @@ export type TransferredMultiAssetEventData = {
 export function getTransferredMultiAssetEventData(ctx: ChainContext, event: Event): TransferredMultiAssetEventData {
     const e = new XTokensTransferredMultiAssetEvent(ctx, event)
 
-    if (e.isV1001) {
-        const [sender, asset, dest] = ctx._chain.decodeEvent(event)
-        return {
-            sender,
-            asset: {
-                __kind: 'V0',
-                value: asset,
-            },
-            dest: {
-                __kind: 'V0',
-                value: dest,
-            },
-        }
-    } else if (e.isV1014 || e.isV1019) {
-        const [sender, asset, dest] = ctx._chain.decodeEvent(event)
-        return {
-            sender,
-            asset: {
-                __kind: 'V1',
-                value: asset,
-            },
-            dest: {
-                __kind: 'V1',
-                value: dest,
-            },
-        }
-    } else {
+
         const { sender, asset, dest } = ctx._chain.decodeEvent(event)
         return {
             sender,
@@ -210,7 +162,6 @@ export function getTransferredMultiAssetEventData(ctx: ChainContext, event: Even
                 value: dest,
             },
         }
-    }
 }
 
 export async function parseTransferredMultiAssetEvent(

@@ -66,14 +66,15 @@ async function getAssetMetadatasStorageData(
     key: any
 ): Promise<AssetMetadatasStorageData | undefined> {
     const storage = new AssetRegistryAssetMetadatasStorage(ctx)
+
     if (!storage.isExists) return undefined
 
-    if (storage.isV2001) {
+    if (storage.isV2011) {
         if (typeof key.value !== 'number') return undefined
-        return await storage.getAsV2001(key.value)
-    } else if (storage.isV2012) {
+        return await storage.getAsV2011(key.value)
+    } else if (storage.isV2020) {
         if (key.__kind === 'NativeAssetId') return undefined
-        return await storage.getAsV2012(key)
+        return await storage.getAsV2020(key)
     } else if (storage.isV2042) {
         return await storage.getAsV2042(key)
     } else if (storage.isV2080) {
@@ -82,6 +83,7 @@ async function getAssetMetadatasStorageData(
         throw new Error()
     }
 }
+
 
 interface AssetMetadata {
     name: string
@@ -166,16 +168,10 @@ export type Currency =
 export type Token = { symbol: string; decimals: number }
 
 const nativeTokens: Map<string, Token & { num: number }> = new Map()
-    .set('KAR', { symbol: 'KAR', decimals: 12, num: 128 })
-    .set('KUSD', { symbol: 'KUSD', decimals: 12, num: 129 })
-    .set('KSM', { symbol: 'KSM', decimals: 12, num: 130 })
-    .set('LKSM', { symbol: 'LKSM', decimals: 12, num: 131 })
-    .set('TAI', { symbol: 'TAI', decimals: 12, num: 132 })
-    .set('BNC', { symbol: 'BNC', decimals: 12, num: 168 })
-    .set('VSKSM', { symbol: 'VSKSM', decimals: 12, num: 169 })
-    .set('PHA', { symbol: 'PHA', decimals: 12, num: 170 })
-    .set('KINT', { symbol: 'KINT', decimals: 12, num: 171 })
-    .set('KBTC', { symbol: 'KBTC', decimals: 8, num: 172 })
+    .set('ACA', { symbol: 'ACA', decimals: 12, num: 128 })
+    .set('AUSD', { symbol: 'AUSD', decimals: 12, num: 129 })
+    .set('DOT', { symbol: 'DOT', decimals: 10, num: 130 })
+    .set('LDOT', { symbol: 'LDOT', decimals: 10, num: 131 })
 
 export async function getTokenFromCurrency(ctx: BlockContext, currency: Currency): Promise<Token> {
     let token: Token | undefined
@@ -213,7 +209,7 @@ async function getCurrencyFromLocation(ctx: BlockContext, location: Location): P
         case 1:
             switch (location.interior.__kind) {
                 case 'Here':
-                    return createToken('KSM')
+                    return createToken('DOT')
                 case 'X2':
                     switch (location.interior.value[0].__kind) {
                         case 'Parachain': {
@@ -306,17 +302,20 @@ function getCurrencyFromKey(key: Uint8Array): Currency | undefined {
 
 // ref https://github.com/AcalaNetwork/Acala/blob/7a2c3a50b36cb58fad8bc63175c7ff1e77479509/runtime/karura/src/constants.rs#L94
 const parachains: Record<number, { tokens: Record<string, Currency> }> = {
+    //Moonbeam
+    2004: {tokens:{}},
+    //Interlay
+    2032: {tokens:{}},
+    //Astar
+    2006: {tokens:{}},
+    //Parallel
+    2012: {tokens:{}},
+
     // bifrost
     2001: {
         tokens: {
             [toHex(Buffer.from([0, 1]))]: createToken('BNC'),
             [toHex(Buffer.from([4, 4]))]: createToken('VSKSM'),
-        },
-    },
-    // phala
-    2004: {
-        tokens: {
-            [toHex(Buffer.from([0, 0]))]: createToken('PHA'),
         },
     },
     // kintsugi
@@ -336,20 +335,11 @@ function getSelfLocationConst(ctx: ChainContext): { __kind: string; value: any }
     const data = new XTokensSelfLocationConstant(ctx)
     if (!data) return undefined
 
-    if (data.isV1001) {
-        return {
-            __kind: 'V0',
-            value: data.asV1001,
-        }
-    } else if (data.isV1014) {
+
+    if (data.isExists) {
         return {
             __kind: 'V1',
-            value: data.asV1014,
-        }
-    } else if (data.asV1019) {
-        return {
-            __kind: 'V1',
-            value: data.asV1019,
+            value: data.asV2000,
         }
     } else {
         throw new Error()
@@ -386,91 +376,3 @@ async function getLocationToCurrencyIdStorage(ctx: BlockContext, location: Locat
 
     return await ctx._chain.getStorage(ctx.block.hash, 'AssetRegistry', 'LocationToCurrencyIds', location)
 }
-
-// fn convert(location: MultiLocation) -> Option<CurrencyId> {
-//     use primitives::TokenSymbol::*;
-//     use CurrencyId::{Erc20, StableAssetPoolToken, Token};
-
-//     if location == MultiLocation::parent() {
-//         return Some(Token(KSM));
-//     }
-
-//     if let Some(currency_id) = AssetIdMaps::<Runtime>::get_currency_id(location.clone()) {
-//         return Some(currency_id);
-//     }
-
-//     match location {
-//         MultiLocation {
-//             parents: 1,
-//             interior: X2(Parachain(para_id), GeneralKey(key)),
-//         } => {
-//             match (para_id, &key.into_inner()[..]) {
-//                 (parachains::bifrost::ID, parachains::bifrost::BNC_KEY) => Some(Token(BNC)),
-//                 (parachains::bifrost::ID, parachains::bifrost::VSKSM_KEY) => Some(Token(VSKSM)),
-//                 (parachains::kintsugi::ID, parachains::kintsugi::KINT_KEY) => Some(Token(KINT)),
-//                 (parachains::kintsugi::ID, parachains::kintsugi::KBTC_KEY) => Some(Token(KBTC)),
-
-//                 (id, key) if id == u32::from(ParachainInfo::get()) => {
-//                     // Karura
-//                     if let Ok(currency_id) = CurrencyId::decode(&mut &*key) {
-//                         // check `currency_id` is cross-chain asset
-//                         match currency_id {
-//                             Token(KAR) | Token(KUSD) | Token(LKSM) | Token(TAI) => Some(currency_id),
-//                             Erc20(address) if !is_system_contract(address) => Some(currency_id),
-//                             StableAssetPoolToken(_pool_id) => Some(currency_id),
-//                             _ => None,
-//                         }
-//                     } else {
-//                         // invalid general key
-//                         None
-//                     }
-//                 }
-//                 _ => None,
-//             }
-//         }
-//         MultiLocation {
-//             parents: 1,
-//             interior: X1(Parachain(parachains::phala::ID)),
-//         } => Some(Token(PHA)),
-//         // adapt for re-anchor canonical location: https://github.com/paritytech/polkadot/pull/4470
-//         MultiLocation {
-//             parents: 0,
-//             interior: X1(GeneralKey(key)),
-//         } => {
-//             let currency_id = CurrencyId::decode(&mut &*key.into_inner()).ok()?;
-//             match currency_id {
-//                 Token(KAR) | Token(KUSD) | Token(LKSM) | Token(TAI) => Some(currency_id),
-//                 Erc20(address) if !is_system_contract(address) => Some(currency_id),
-//                 StableAssetPoolToken(_pool_id) => Some(currency_id),
-//                 _ => None,
-//             }
-//         }
-//         _ => None,
-//     }
-// }
-
-// ACA("Acala", 12) = 0,
-// 		AUSD("Acala Dollar", 12) = 1,
-// 		DOT("Polkadot", 10) = 2,
-// 		LDOT("Liquid DOT", 10) = 3,
-// 		TAP("Tapio", 12) = 4,
-// 		// 20 - 39: External tokens (e.g. bridged)
-// 		RENBTC("Ren Protocol BTC", 8) = 20,
-// 		CASH("Compound CASH", 8) = 21,
-// 		// 40 - 127: Polkadot parachain tokens
-
-// 		// 128 - 147: Karura & Kusama native tokens
-// 		KAR("Karura", 12) = 128,
-// 		KUSD("Karura Dollar", 12) = 129,
-// 		KSM("Kusama", 12) = 130,
-// 		LKSM("Liquid KSM", 12) = 131,
-// 		TAI("Taiga", 12) = 132,
-// 		// 148 - 167: External tokens (e.g. bridged)
-// 		// 149: Reserved for renBTC
-// 		// 150: Reserved for CASH
-// 		// 168 - 255: Kusama parachain tokens
-// 		BNC("Bifrost Native Token", 12) = 168,
-// 		VSKSM("Bifrost Voucher Slot KSM", 12) = 169,
-// 		PHA("Phala Native Token", 12) = 170,
-// 		KINT("Kintsugi Native Token", 12) = 171,
-// 		KBTC("Kintsugi Wrapped BTC", 8) = 172,
